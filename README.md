@@ -1,6 +1,14 @@
 # pylogix-api
 Web api for pylogix library
 
+## Dependencies
+
+- Flask
+
+```
+pip install flask
+```
+
 ## Usage
 
 In a browser or postman you can do the following get requests.
