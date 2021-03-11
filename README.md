@@ -63,6 +63,8 @@ localhost:5000/pylogix/v1.0/plc/192.168.1.196/2/tags/[BaseBOOL, BaseDINT, BaseIN
 Get a range from a 1 dim array:
 
 ```
+localhost:5000/pylogix/v1.0/plc/192.168.1.196/2/tags/BaseDINTArray[0]{10}
+
 {
   "tag": {
     "status": "Success",
