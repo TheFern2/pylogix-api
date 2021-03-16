@@ -24,7 +24,10 @@ def get_all_tags(ipAddress, slot):
             })
 
     if returnTable:
-        return render_template('TableList.html', values=tags, colnames=['tagName', 'dataType'])
+        if includeLinks:
+            return render_template('TableList.html', values=tags, colnames=['tagName', 'dataType'], url1Title = 'Discover Devices: ', url1Link = url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True), url2Title = '', url2Link = '')
+        else:
+            return render_template('TableList.html', values=tags, colnames=['tagName', 'dataType'], url1Title = '', url1Link = '', url2Title = '', url2Link = '')
     else:
         if includeLinks:
             return jsonify({'tags': tags}, '------------------------------------------', 'Links To Other Pages', 'Discover Devices: ' + url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
@@ -109,7 +112,10 @@ def get_tag(tag, ipAddress, slot):
 
         if len(regularTags) > 0 or len(arrayTags) > 0:
             if returnTable:
-                return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'])
+                if includeLinks:
+                    return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'], url1Title = 'List Tags: ', url1Link = url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), url2Title = 'Discover Devices: ', url2Link = url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
+                else:
+                    return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'], url1Title = '', url1Link = '', url2Title = '', url2Link = '')
             else:
                 if includeLinks:
                     return jsonify({'tags': results}, '------------------------------------------', 'Links To Other Pages', 'List Tags: ' + url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), 'Discover Devices: ' + url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
@@ -177,7 +183,10 @@ def get_tag(tag, ipAddress, slot):
         comm.Close()
 
         if returnTable:
-            return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'])
+            if includeLinks:
+                return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'], url1Title = 'List Tags: ', url1Link = url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), url2Title = 'Discover Devices: ', url2Link = url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
+            else:
+                return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'], url1Title = '', url1Link = '', url2Title = '', url2Link = '')
         else:
             if includeLinks:
                 return jsonify({'tag': results}, '------------------------------------------', 'Links To Other Pages', 'List Tags: ' + url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), 'Discover Devices: ' + url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
@@ -204,7 +213,10 @@ def get_devices(ipAddress, slot):
             })
         
     if returnTable:
-        return render_template('TableList.html', values=devices, colnames=['productName', 'revision'])
+        if includeLinks:
+            return render_template('TableList.html', values=devices, colnames=['productName', 'revision'], url1Title = 'List Tags: ', url1Link = url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), url2Title = '', url2Link = '')
+        else:
+            return render_template('TableList.html', values=devices, colnames=['productName', 'revision'], url1Title = '', url1Link = '', url2Title = '', url2Link = '')
     else:
         if includeLinks:
             return jsonify({'devices': devices}, '------------------------------------------', 'Links To Other Pages', 'List Tags: ' + url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True))
