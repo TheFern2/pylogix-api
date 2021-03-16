@@ -35,5 +35,13 @@
         </tbody>
       </table>
     </p>
+    <p>
+      {%if not url1Title == ""%}
+          {{url1Title}}<a href="{{url1Link}}" target="_blank">{{url1Link}}</a><br>
+      {%endif%}
+      {%if not url2Title == ""%}
+          {{url2Title}}<a href="{{url2Link}}" target="_blank">{{url2Link}}</a>
+      {%endif%}
+    </p>
   </body>
 </html>
