@@ -2,6 +2,9 @@
 
 Web api for pylogix library
 
+- master branch contains the api
+- html branch contains api + html example
+
 ## Video Demo
 
 [![Demo](https://img.youtube.com/vi/JIagCipFybE/0.jpg)](https://www.youtube.com/watch?v=JIagCipFybE)
