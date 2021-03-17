@@ -1,5 +1,5 @@
 #!flask/bin/python
-from flask import Flask, jsonify, url_for, render_template
+from flask import Flask, jsonify
 from pylogix import PLC
 
 app = Flask(__name__)
@@ -7,8 +7,6 @@ app = Flask(__name__)
 @app.route('/pylogix/v1.0/plc/<ipAddress>/<int:slot>/tags', methods=['GET'])
 def get_all_tags(ipAddress, slot):
     tags = []
-    returnTable = False
-    includeLinks = False
 
     comm = PLC(ipAddress, slot)
     ret = comm.GetTagList()
@@ -23,16 +21,7 @@ def get_all_tags(ipAddress, slot):
              "dataType"   : tag.DataType
             })
 
-    if returnTable:
-        if includeLinks:
-            return render_template('TableList.html', values=tags, colnames=['tagName', 'dataType'], url1Title = 'Discover Devices: ', url1Link = url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True), url2Title = '', url2Link = '')
-        else:
-            return render_template('TableList.html', values=tags, colnames=['tagName', 'dataType'], url1Title = '', url1Link = '', url2Title = '', url2Link = '')
-    else:
-        if includeLinks:
-            return jsonify({'tags': tags}, '------------------------------------------', 'Links To Other Pages', 'Discover Devices: ' + url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
-        else:
-            return jsonify({'tags': tags})
+    return jsonify({'tags': tags})
 
 @app.route('/pylogix/v1.0/plc/<ipAddress>/<int:slot>/tags/<tag>', methods=['GET'])
 def get_tag(tag, ipAddress, slot):
@@ -43,8 +32,6 @@ def get_tag(tag, ipAddress, slot):
     readArray = False
     arrayElementCount = 0
     showBoolAsOneZero = False
-    returnTable = False
-    includeLinks = False
 
     if tag.startswith('[') and tag.endswith(']'): # array of mixed tags
         tags = (tag[1:-1].replace(' ', '')).split(';')
@@ -110,22 +97,10 @@ def get_tag(tag, ipAddress, slot):
 
         comm.Close()
 
-        if len(regularTags) > 0 or len(arrayTags) > 0:
-            if returnTable:
-                if includeLinks:
-                    return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'], url1Title = 'List Tags: ', url1Link = url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), url2Title = 'Discover Devices: ', url2Link = url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
-                else:
-                    return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'], url1Title = '', url1Link = '', url2Title = '', url2Link = '')
-            else:
-                if includeLinks:
-                    return jsonify({'tags': results}, '------------------------------------------', 'Links To Other Pages', 'List Tags: ' + url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), 'Discover Devices: ' + url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
-                else:
-                    return jsonify({'tags': results})
+        if len(regularTags) > 0 or len(arrayTags) > 0:            
+            return jsonify({'tags': results})
         else:
-            if includeLinks:
-                return jsonify('Not a valid tag!', '------------------------------------------', 'Links To Other Pages', 'List Tags: ' + url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), 'Discover Devices: ' + url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
-            else:
-                return jsonify('Not a valid tag!')
+            return jsonify('Not a valid tag!')
     else:
         if tag.endswith('}') and '{' in tag: # 1 or 2 or 3 dimensional array
             try:
@@ -182,22 +157,11 @@ def get_tag(tag, ipAddress, slot):
 
         comm.Close()
 
-        if returnTable:
-            if includeLinks:
-                return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'], url1Title = 'List Tags: ', url1Link = url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), url2Title = 'Discover Devices: ', url2Link = url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
-            else:
-                return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'], url1Title = '', url1Link = '', url2Title = '', url2Link = '')
-        else:
-            if includeLinks:
-                return jsonify({'tag': results}, '------------------------------------------', 'Links To Other Pages', 'List Tags: ' + url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), 'Discover Devices: ' + url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
-            else:
-                return jsonify({'tag': results})
+        return jsonify({'tag': results})
 
 @app.route('/pylogix/v1.0/plc/<ipAddress>/<int:slot>/devices', methods=['GET'])
 def get_devices(ipAddress, slot):
     devices = []
-    returnTable = False
-    includeLinks = False
 
     comm = PLC(ipAddress, slot)
     ret = comm.Discover()
@@ -212,16 +176,7 @@ def get_devices(ipAddress, slot):
              "revision"   : device.Revision
             })
         
-    if returnTable:
-        if includeLinks:
-            return render_template('TableList.html', values=devices, colnames=['productName', 'revision'], url1Title = 'List Tags: ', url1Link = url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), url2Title = '', url2Link = '')
-        else:
-            return render_template('TableList.html', values=devices, colnames=['productName', 'revision'], url1Title = '', url1Link = '', url2Title = '', url2Link = '')
-    else:
-        if includeLinks:
-            return jsonify({'devices': devices}, '------------------------------------------', 'Links To Other Pages', 'List Tags: ' + url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True))
-        else:
-            return jsonify({'devices': devices})
+    return jsonify({'devices': devices})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

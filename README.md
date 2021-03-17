@@ -14,9 +14,43 @@ Web api for pylogix library
 pip install flask
 ```
 
+## How to Run
+
+Linux or Mac (I don't know many Industrial Engineers with Macs, but hey you never know :) ):
+
+```
+python app.py
+or
+python3 app.py
+```
+
+Windows:
+
+```
+If there is only one python installed:
+python app.py
+Else
+py -3.7 app.py
+```
+
+## Insomnia Setup
+
+I've exported a json file for insomnia for quick and easy testing, just import as a workspace.
+
+Preferences > Data > Import Data
+
+Then setup a pylogix-api-env, those two variables are used within the routes in insomnia:
+
+```
+{
+  "plc_ip": "192.168.56.106",
+  "plc_slot": "2"
+}
+```
+
 ## Usage
 
-In a browser or postman you can do the following get requests.
+In a browser or insomnia you can do the following get requests.
 
 Routes:
 
@@ -25,9 +59,13 @@ Routes:
 
 /pylogix/v1.0/plc/<ipAddress>/<int:slot>/tags/<tag>
 
-/pylogix/v1.0/plc/192.168.0.10/0/tags/[someTag1, someTag2, someTag3, someTag4]
+/pylogix/v1.0/plc/192.168.0.10/0/tags/[someTag1; someTag2; someTag3; someTag4]
 
-/pylogix/v1.0/plc/192.168.0.10/0/tags/someArrayTag[x]{y}
+/pylogix/v1.0/plc/192.168.0.10/0/tags/someArrayTag[x]{a}
+
+/pylogix/v1.0/plc/192.168.0.10/0/tags/someArrayTag[x, y]{a}
+
+/pylogix/v1.0/plc/192.168.0.10/0/tags/someArrayTag[x,y,z]{a}
 
 /pylogix/v1.0/plc/<ipAddress>/<int:slot>/devices
 ```
@@ -53,11 +91,25 @@ Get a list of tags:
 ```
 localhost:5000/pylogix/v1.0/plc/192.168.1.196/2/tags/[BaseBOOL, BaseDINT, BaseINT]
 
-[
-  "BaseBOOL = True",
-  "BaseDINT = -545437484",
-  "BaseINT = 6512"
-]
+{
+  "tags": [
+    {
+      "status": "Success",
+      "tagName": "BaseBOOL",
+      "value": "True"
+    },
+    {
+      "status": "Success",
+      "tagName": "BaseDINT",
+      "value": "-545437484"
+    },
+    {
+      "status": "Success",
+      "tagName": "BaseINT",
+      "value": "6512"
+    }
+  ]
+}
 ```
 
 Get a range from a 1 dim array:
@@ -90,3 +142,9 @@ Example running the request from another machine, replace localhost with the mac
 ```
 localhost:5000/pylogix/v1.0/plc/192.168.0.10/0/tags/someTag
 ```
+
+## Contributors
+
+Many thanks to:
+
+- [GitHubDragonFly](https://github.com/GitHubDragonFly)
