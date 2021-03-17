@@ -3,7 +3,7 @@
 Web api for pylogix library
 
 - master branch contains the api
-- html branch contains api + html example
+- html branch contains api + html example [html](https://github.com/TheFern2/pylogix-api/tree/html)
 
 ## Video Demo
 
