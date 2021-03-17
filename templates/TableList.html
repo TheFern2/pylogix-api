@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      table {
+      border: 1;
+      padding: 5px;
+      background-color: blue;
+      }
+      th, td {
+      padding: 5px;
+      background-color: #f5f1c1;
+      }
+    </style>
+    <title>Table</title>
+  </head>
+  <body>
+    <p>
+      <table>
+        <thead>
+          <tr>
+            {% for name in colnames %}
+              <th>{{ name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for val in values %}
+            <tr>
+              {% for name in colnames %}
+                <td>{{ val[name] }}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </p>
+    <p>
+      {%if not url1Title == ""%}
+          {{url1Title}}<a href="{{url1Link}}" target="_blank">{{url1Link}}</a><br>
+      {%endif%}
+      {%if not url2Title == ""%}
+          {{url2Title}}<a href="{{url2Link}}" target="_blank">{{url2Link}}</a>
+      {%endif%}
+    </p>
+  </body>
+</html>
