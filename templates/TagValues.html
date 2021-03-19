@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body { background-color: #f8f1c1; }
+      ol { list-style-type: '\2714'; }
+      ul { list-style-type: none; }
+      li { color: blue; font-size: 120%; }
+      greent { color: darkgreen; font-size: 115%; }
+      blackt { color: black; }
+      lgreyt { color:  #b2babb ; font-size: 110%; }
+    </style>
+    <title>Tags Values</title>
+  </head>
+  <body>
+    <p><ol><li><greent> &nbsp; Total: {{results|length}}</greent></li></ol></p>
+    <p>
+      {% if results == "" %}
+          <p> &nbsp; &nbsp; Not a valid tag!</p>
+      {% else %}
+          {% for tag in results %}
+              <p>
+                <ul><li><img src="{{url_for('static', filename='arrowEblue.png')}}"> &nbsp; &nbsp; &nbsp;<blackt>{{ tag.tagName }}</blackt> &nbsp; &nbsp; {{ tag.value }} &nbsp; &nbsp;<lgreyt>{{ tag.status }}</lgreyt></li></ul>
+              </p>
+          {% endfor %}
+      {% endif %}
+    </p><br>
+    <p>
+      {%if not url1Title == ""%}
+          &nbsp; &nbsp;{{url1Title}}<a href="{{url1Link}}" target="_blank">{{url1Link}}</a><br>
+      {%endif%}
+      {%if not url2Title == ""%}
+          &nbsp; &nbsp;{{url2Title}}<a href="{{url2Link}}" target="_blank">{{url2Link}}</a>
+      {%endif%}
+    </p>
+  </body>
+</html>
