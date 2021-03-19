@@ -8,7 +8,7 @@ app = Flask(__name__)
 def get_all_tags(ipAddress, slot):
     tags = []
     returnTable = False
-    includeLinks = True
+    includeLinks = False
 
     comm = PLC(ipAddress, slot)
     ret = comm.GetTagList()
@@ -42,9 +42,9 @@ def get_tag(tag, ipAddress, slot):
     results = []
     readArray = False
     arrayElementCount = 0
-    showBoolAsOneZero = True
+    showBoolAsOneZero = False
     returnTable = False
-    includeLinks = True
+    includeLinks = False
 
     if tag.startswith('[') and tag.endswith(']'): # array of mixed tags
         tags = (tag[1:-1].replace(' ', '')).split(';')
@@ -184,9 +184,9 @@ def get_tag(tag, ipAddress, slot):
 
         if returnTable:
             if includeLinks:
-                return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'], title = 'Tags & Values', url1Title = 'List Tags: ', url1Link = url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), url2Title = 'Discover Devices: ', url2Link = url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
+                return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'], title = 'Tags Values', url1Title = 'List Tags: ', url1Link = url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), url2Title = 'Discover Devices: ', url2Link = url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
             else:
-                return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'], title = 'Tags & Values', url1Title = '', url1Link = '', url2Title = '', url2Link = '')
+                return render_template('TableList.html', values=results, colnames=['tagName', 'value', 'status'], title = 'Tags Values')
         else:
             if includeLinks:
                 return render_template('TagValues.html', results=results, url1Title = 'List Tags: ', url1Link = url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), url2Title = 'Discover Devices: ', url2Link = url_for('get_devices', ipAddress=ipAddress, slot=slot, _external=True))
@@ -197,7 +197,7 @@ def get_tag(tag, ipAddress, slot):
 def get_devices(ipAddress, slot):
     devices = []
     returnTable = False
-    includeLinks = True
+    includeLinks = False
 
     comm = PLC(ipAddress, slot)
     ret = comm.Discover()
@@ -214,9 +214,9 @@ def get_devices(ipAddress, slot):
         
     if returnTable:
         if includeLinks:
-            return render_template('TableList.html', values=devices, colnames=['productName', 'revision'], title = 'Devices', url1Title = 'List Tags: ', url1Link = url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True), url2Title = '', url2Link = '')
+            return render_template('TableList.html', values=devices, colnames=['productName', 'revision'], title = 'Device List', url1Title = 'List Tags: ', url1Link = url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True))
         else:
-            return render_template('TableList.html', values=devices, colnames=['productName', 'revision'], title = 'Devices', url1Title = '', url1Link = '', url2Title = '', url2Link = '')
+            return render_template('TableList.html', values=devices, colnames=['productName', 'revision'], title = 'Device List')
     else:
         if includeLinks:
             return render_template('DeviceList.html', devices=devices, url1Title = 'List Tags: ', url1Link = url_for('get_all_tags', ipAddress=ipAddress, slot=slot, _external=True))
