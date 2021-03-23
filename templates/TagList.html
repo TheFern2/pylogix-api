@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body { background-color: #f8f1c1; }
+      ol { list-style-type: '\2714'; }
+      ul { list-style-type: none; }
+      li { color: blue; font-size: 130%; }
+      greent { color: darkgreen; font-size: 115%; }
+      blackt { color: black; font-size: 115%; }
+      lgreyt { color:  #b2babb ; font-size: 110%; }
+    </style>
+    <title>Tag List</title>
+  </head>
+  <body>
+    <p><ol><li><greent> &nbsp; Total: {{tags|length}}</greent></li></ol></p>
+    <p>
+      {% for tag in tags %}
+          <p>
+          {% if not tag.dataType == "" and not ":" in tag.dataType %}
+              <ul><li><img src="{{url_for('static', filename='arrowEblue.png')}}"> &nbsp; &nbsp; &nbsp;<blackt>{{ tag.tagName }}</blackt> &nbsp; &nbsp; <lgreyt>{{ tag.dataType }}</lgreyt></li></ul>
+          {% endif %}
+          </p>
+      {% endfor %}
+      {% for tag in tags %}
+          <p>
+          {% if ":" in tag.dataType %}
+              <ul><li><img src="{{url_for('static', filename='arrowElavender.png')}}"> &nbsp; &nbsp; &nbsp;<blackt>{{ tag.tagName }}</blackt> &nbsp; &nbsp; <lgreyt>{{ tag.dataType }}</lgreyt></li></ul>
+          {% endif %}
+          </p>
+      {% endfor %}
+      {% for tag in tags %}
+          <p>
+          {% if tag.dataType == "" %}
+              <ul><li><img src="{{url_for('static', filename='arrowEyellow.png')}}"> &nbsp; &nbsp; &nbsp;<blackt>{{ tag.tagName }}</blackt></li></ul>
+          {% endif %}
+          </p>
+      {% endfor %}
+    </p><br>
+    <p> &nbsp; &nbsp;<img src="{{url_for('static', filename='arrowEblue.png')}}"> &nbsp; Controller or Program Tag  &nbsp; &nbsp; &nbsp; &nbsp;<img src="{{url_for('static', filename='arrowElavender.png')}}"> &nbsp; Module  &nbsp; &nbsp; &nbsp; &nbsp;<img src="{{url_for('static', filename='arrowEyellow.png')}}"> &nbsp; Routine</p><br>
+    <p>
+      {%if not url1Title == ""%}
+          &nbsp; &nbsp;{{url1Title}}<a href="{{url1Link}}" target="_blank">{{url1Link}}</a><br>
+      {%endif%}
+      {%if not url2Title == ""%}
+          &nbsp; &nbsp;{{url2Title}}<a href="{{url2Link}}" target="_blank">{{url2Link}}</a>
+      {%endif%}
+    </p>
+  </body>
+</html>
