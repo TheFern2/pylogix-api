@@ -89,7 +89,7 @@ localhost:5000/pylogix/v1.0/plc/192.168.0.10/0/tags/someTag
 Get a list of tags:
 
 ```
-localhost:5000/pylogix/v1.0/plc/192.168.1.196/2/tags/[BaseBOOL, BaseDINT, BaseINT]
+localhost:5000/pylogix/v1.0/plc/192.168.1.196/2/tags/[BaseBOOL; BaseDINT; BaseINT]
 
 {
   "tags": [
